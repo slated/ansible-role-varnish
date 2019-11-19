@@ -43,6 +43,10 @@ sub vcl_recv {
     if (req.url ~ "^/api/v[^/]+/tasks/") {
         return (pass);
     }
+    # Exclude calls to the sources
+    if (req.url ~ "^/api/v[^/]+/source/") {
+        return (pass);
+    }
 
     {% if varnish_vhosts is defined %}
       # Varnish vhosts.
