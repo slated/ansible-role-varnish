@@ -47,6 +47,10 @@ sub vcl_recv {
     if (req.url ~ "^/api/v[^/]+/source/") {
         return (pass);
     }
+    # Exclude calls to the sources
+    if (req.url ~ "^/sl8dmin/") {
+        return (pass);
+    }
 
     {% if varnish_vhosts is defined %}
       # Varnish vhosts.
@@ -64,5 +68,5 @@ sub vcl_recv {
 
 sub vcl_backend_response {
     # default cache ttl
-    set beresp.ttl = 12h;
+    set beresp.ttl = 30m;
 }
